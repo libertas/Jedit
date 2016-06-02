@@ -5,7 +5,9 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
@@ -19,7 +21,7 @@ public class Jedit {
 		
 		Container c = app.getContentPane();
 		c.setLayout(new BoxLayout(c, 1));
-
+		
 		JMenuBar menubar = new JMenuBar();
 		
 		JMenu fileMenu = new JMenu("File");
@@ -37,7 +39,6 @@ public class Jedit {
 		JMenuItem exitItem = new JMenuItem("Exit");
 		fileMenu.add(exitItem);
 		
-		
 		JMenu helpMenu = new JMenu("Help");
 		menubar.add(helpMenu);
 		
@@ -46,11 +47,25 @@ public class Jedit {
 		
 		c.add(menubar);
 		
+		JTabbedPane tabbedPane = new JTabbedPane();
+		c.add(tabbedPane);
+		
+		tabbedPane.add(MakeTab(), "1");
+		tabbedPane.add(MakeTab(), "2");
+		tabbedPane.add(MakeTab(), "3");
+		
+		app.setVisible(true);
+	}
+	
+	protected static JPanel MakeTab() {
+		JPanel jp = new JPanel();
+		jp.setLayout(new BoxLayout(jp, 1));
+		
 		editor = new JTextArea("", 35, 40);
 		editor.setBorder(new LineBorder(Color.black));
 		JScrollPane editSP = new JScrollPane(editor);
-		c.add(editSP);
+		jp.add(editSP);
 		
-		app.setVisible(true);
+		return jp;
 	}
 }
