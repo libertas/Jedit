@@ -2,6 +2,10 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -46,6 +50,32 @@ public class Jedit {
 		
 		JMenuItem openItem = new JMenuItem("Open");
 		fileMenu.add(openItem);
+		openItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FileChooser fc = new FileChooser();
+				File f = new File(fc.filename);
+				 FileInputStream fis = null;
+				try {
+					fis = new FileInputStream(f);
+				} catch (FileNotFoundException e2) {
+					e2.printStackTrace();
+				}
+				 
+				 byte[] buf = new byte[1024];
+				 StringBuffer sb = new StringBuffer();
+		         try {
+					while((fis.read(buf)) != -1) {
+					     sb.append(new String(buf));    
+					     buf=new byte[1024];
+					 }
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+		        
+		         System.out.println(tabbedPane.getSelectedComponent().
+		        		 getComponentAt(0, 0));
+			}
+		});
 		
 		JMenuItem saveItem = new JMenuItem("Save");
 		fileMenu.add(saveItem);
