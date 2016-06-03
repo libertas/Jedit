@@ -1,5 +1,8 @@
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -13,6 +16,7 @@ import javax.swing.border.LineBorder;
 
 public class Jedit {
 	private static JTextArea editor;
+	private static long tab_count = 1;
 	
 	public static void main(String[] arg) {
 		JFrame app = new JFrame("JEdit");
@@ -22,6 +26,10 @@ public class Jedit {
 		Container c = app.getContentPane();
 		c.setLayout(new BoxLayout(c, 1));
 		
+		JTabbedPane tabbedPane = new JTabbedPane();
+		
+		tabbedPane.add(MakeTab(), "1");
+		
 		JMenuBar menubar = new JMenuBar();
 		
 		JMenu fileMenu = new JMenu("File");
@@ -29,6 +37,12 @@ public class Jedit {
 		
 		JMenuItem newItem = new JMenuItem("New");
 		fileMenu.add(newItem);
+		newItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tab_count++;
+				tabbedPane.add(MakeTab(), String.valueOf(tab_count));
+			}
+		});
 		
 		JMenuItem openItem = new JMenuItem("Open");
 		fileMenu.add(openItem);
@@ -36,8 +50,24 @@ public class Jedit {
 		JMenuItem saveItem = new JMenuItem("Save");
 		fileMenu.add(saveItem);
 		
+		JMenuItem closeItem = new JMenuItem("Close");
+		fileMenu.add(closeItem);
+		closeItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tabbedPane.removeTabAt(tabbedPane.getSelectedIndex());
+				if(tabbedPane.getSelectedIndex() == -1) {
+					System.exit(0);
+				}
+			}
+		});
+		
 		JMenuItem exitItem = new JMenuItem("Exit");
 		fileMenu.add(exitItem);
+		exitItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 		
 		JMenu helpMenu = new JMenu("Help");
 		menubar.add(helpMenu);
@@ -46,13 +76,7 @@ public class Jedit {
 		helpMenu.add(aboutItem);
 		
 		c.add(menubar);
-		
-		JTabbedPane tabbedPane = new JTabbedPane();
 		c.add(tabbedPane);
-		
-		tabbedPane.add(MakeTab(), "1");
-		tabbedPane.add(MakeTab(), "2");
-		tabbedPane.add(MakeTab(), "3");
 		
 		app.setVisible(true);
 	}
