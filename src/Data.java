@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
 public class Data {
@@ -70,15 +71,25 @@ public class Data {
 	public void save(){
 		File f = new File(filename);
 		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(f);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		
+		if(dataType == "text") {
+			try {
+				fos = new FileOutputStream(f);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				fos.write(editor.getText().getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-		try {
-			fos.write(editor.getText().getBytes());
-		} catch (IOException e) {
-			e.printStackTrace();
+		
+		if(dataType == "bin") {
+			JOptionPane.showMessageDialog(null,
+					"Error:Saving a binary file",
+					"ERROR", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }
