@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -118,6 +119,14 @@ public class Jedit {
 		
 		JMenuItem aboutItem = new JMenuItem("About");
 		helpMenu.add(aboutItem);
+		aboutItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null,
+						"Welcome to Jedit",
+						"ABOUT", JOptionPane.PLAIN_MESSAGE);
+			}
+				
+		});
 		
 		c.add(menubar);
 		c.add(tabbedPane);
