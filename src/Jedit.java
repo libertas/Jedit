@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -19,8 +21,8 @@ import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
 public class Jedit {
-	private static JTextArea editor;
 	private static long tab_count = 1;
+	private static ArrayList<Data> dataList = new ArrayList<Data>();
 	
 	public static void main(String[] arg) {
 		JFrame app = new JFrame("JEdit");
@@ -32,8 +34,6 @@ public class Jedit {
 		
 		JTabbedPane tabbedPane = new JTabbedPane();
 		
-		tabbedPane.add(MakeTab(), "1");
-		
 		JMenuBar menubar = new JMenuBar();
 		
 		JMenu fileMenu = new JMenu("File");
@@ -44,7 +44,7 @@ public class Jedit {
 		newItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tab_count++;
-				tabbedPane.add(MakeTab(), String.valueOf(tab_count));
+				tabbedPane.add((Component) MakeTab()[0], String.valueOf(tab_count));
 			}
 		});
 		
@@ -53,32 +53,25 @@ public class Jedit {
 		openItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				FileChooser fc = new FileChooser();
-				File f = new File(fc.filename);
-				 FileInputStream fis = null;
-				try {
-					fis = new FileInputStream(f);
-				} catch (FileNotFoundException e2) {
-					e2.printStackTrace();
-				}
-				 
-				 byte[] buf = new byte[1024];
-				 StringBuffer sb = new StringBuffer();
-		         try {
-					while((fis.read(buf)) != -1) {
-					     sb.append(new String(buf));    
-					     buf=new byte[1024];
-					 }
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-		        
-		         System.out.println(tabbedPane.getSelectedComponent().
-		        		 getComponentAt(0, 0));
+				Object[] obj = MakeTab(); 
+				tabbedPane.add((Component) obj[0], fc.filename);
+				Data data = new Data("text", fc.filename, (JTextArea) obj[1]);
+				dataList.add(data);
+				data.open();
 			}
+				
 		});
 		
-		JMenuItem saveItem = new JMenuItem("Save");
+		JMenuItem saveItem = new JMenuItem("Save All");
 		fileMenu.add(saveItem);
+		saveItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				for(int i = 0; i < dataList.size(); i++){
+					dataList.get(i).save();
+				}
+			}
+				
+		});
 		
 		JMenuItem closeItem = new JMenuItem("Close");
 		fileMenu.add(closeItem);
@@ -111,15 +104,19 @@ public class Jedit {
 		app.setVisible(true);
 	}
 	
-	protected static JPanel MakeTab() {
+	protected static Object[] MakeTab() {
 		JPanel jp = new JPanel();
 		jp.setLayout(new BoxLayout(jp, 1));
-		
-		editor = new JTextArea("", 35, 40);
+
+		JTextArea editor = new JTextArea("", 35, 40);
 		editor.setBorder(new LineBorder(Color.black));
 		JScrollPane editSP = new JScrollPane(editor);
 		jp.add(editSP);
 		
-		return jp;
+		Object[] obj = new Object[2];
+		obj[0] = jp;
+		obj[1] = editor;
+		
+		return obj;
 	}
 }

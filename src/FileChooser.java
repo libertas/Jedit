@@ -8,7 +8,7 @@ import javax.swing.JLabel;
   
 
 public class FileChooser extends JFrame{
-	JButton open=null;
+	JButton open = null;
 	public String filename = "";
     public FileChooser(){
         JFileChooser jfc=new JFileChooser();
