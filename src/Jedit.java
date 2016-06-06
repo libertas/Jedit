@@ -21,7 +21,6 @@ import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
 public class Jedit {
-	private static long tab_count = 1;
 	private static ArrayList<Data> dataList = new ArrayList<Data>();
 	
 	public static void main(String[] arg) {
@@ -43,8 +42,24 @@ public class Jedit {
 		fileMenu.add(newItem);
 		newItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tab_count++;
-				tabbedPane.add((Component) MakeTab()[0], String.valueOf(tab_count));
+				FileCreator fc = new FileCreator();
+				
+				File f = new File(fc.filename);
+				if(f.isDirectory()) {
+					return;
+				}
+				try {
+					f.createNewFile();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+					return;
+				}
+				
+				Object[] obj = MakeTab(); 
+				tabbedPane.add((Component) obj[0], fc.filename);
+				Data data = new Data("text", fc.filename, (JTextArea) obj[1]);
+				dataList.add(data);
+				data.open();
 			}
 		});
 		
@@ -53,6 +68,12 @@ public class Jedit {
 		openItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				FileChooser fc = new FileChooser();
+				
+				File f = new File(fc.filename);
+				if(f.isDirectory()) {
+					return;
+				}
+				
 				Object[] obj = MakeTab(); 
 				tabbedPane.add((Component) obj[0], fc.filename);
 				Data data = new Data("text", fc.filename, (JTextArea) obj[1]);
