@@ -11,10 +11,17 @@ public class Data {
 	String filename;
 	JTextArea editor;
 	
-	public Data(String dataType, String filename, JTextArea editor) {
-		this.dataType = dataType;
+	public Data(String filename, JTextArea editor) {
 		this.filename = filename;
 		this.editor = editor;
+		
+		if(filename.endsWith(".txt")) {
+			this.dataType = "text";
+		} else if(filename.endsWith(".png")) {
+			this.dataType = "image";
+		} else {
+			this.dataType = "bin";
+		}
 	}
 	
 	public void open() {
@@ -25,19 +32,39 @@ public class Data {
 		} catch (FileNotFoundException e2) {
 			e2.printStackTrace();
 		}
-		 
-		 byte[] buf = new byte[1024];
-		 StringBuffer sb = new StringBuffer();
-         try {
-			while((fis.read(buf)) != -1) {
-			     sb.append(new String(buf));    
-			     buf=new byte[1024];
-			 }
-		} catch (IOException e1) {
-			e1.printStackTrace();
+		
+		if(dataType == "text" || dataType == "bin") {
+			byte[] buf = new byte[1024];
+			StringBuffer sb = new StringBuffer();
+	        try {
+	        	while((fis.read(buf)) != -1) {
+	        		sb.append(new String(buf));    
+	        		buf=new byte[1024];
+	        	}
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+	        
+	        if(dataType == "text") {
+	        	editor.setText(sb.toString());
+	        }
+	        
+	        String str = sb.toString();
+
+	        if(dataType == "bin") {
+	        	String tmp;
+	        	for(int i = 0; i < f.length(); i++) {
+	        		tmp = Integer.toHexString(str.charAt(i));
+		        	if((i + 1) % 5 == 0) {
+		        		editor.append(tmp + "\n");
+		        	} else {
+		        		editor.append(tmp + "\t");
+		        	}
+	        	}
+	        }
 		}
         
-        editor.setText(sb.toString());
+        
 	}
 	
 	public void save(){

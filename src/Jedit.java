@@ -57,7 +57,7 @@ public class Jedit {
 				
 				Object[] obj = MakeTab(); 
 				tabbedPane.add((Component) obj[0], fc.filename);
-				Data data = new Data("text", fc.filename, (JTextArea) obj[1]);
+				Data data = new Data(fc.filename, (JTextArea) obj[1]);
 				dataList.add(data);
 				data.open();
 			}
@@ -76,7 +76,7 @@ public class Jedit {
 				
 				Object[] obj = MakeTab(); 
 				tabbedPane.add((Component) obj[0], fc.filename);
-				Data data = new Data("text", fc.filename, (JTextArea) obj[1]);
+				Data data = new Data(fc.filename, (JTextArea) obj[1]);
 				dataList.add(data);
 				data.open();
 			}
