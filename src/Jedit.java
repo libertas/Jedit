@@ -99,6 +99,7 @@ public class Jedit {
 		fileMenu.add(closeItem);
 		closeItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dataList.remove(tabbedPane.getSelectedIndex());
 				tabbedPane.removeTabAt(tabbedPane.getSelectedIndex());
 				if(tabbedPane.getSelectedIndex() == -1) {
 					System.exit(0);
