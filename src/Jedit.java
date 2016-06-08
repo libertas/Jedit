@@ -96,9 +96,17 @@ public class Jedit {
 				
 		});
 		
-		JMenuItem saveItem = new JMenuItem("Save All");
+		JMenuItem saveItem = new JMenuItem("Save");
 		fileMenu.add(saveItem);
 		saveItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dataList.get(tabbedPane.getSelectedIndex()).save();
+			}
+		});
+		
+		JMenuItem saveAllItem = new JMenuItem("Save All");
+		fileMenu.add(saveAllItem);
+		saveAllItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				for(int i = 0; i < dataList.size(); i++){
 					dataList.get(i).save();
