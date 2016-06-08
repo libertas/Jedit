@@ -176,7 +176,8 @@ public class Jedit {
 		jp.setLayout(new BoxLayout(jp, 1));
 
 		JLabel jlpic = new JLabel();
-		jp.add(jlpic);
+		JScrollPane imgSP = new JScrollPane(jlpic);
+		jp.add(imgSP);
 		
 		icon.setImage(icon.getImage().getScaledInstance(icon.getIconWidth(),
 				icon.getIconHeight(), Image.SCALE_DEFAULT));
