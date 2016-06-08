@@ -79,13 +79,13 @@ public class Data {
 		File f = new File(filename);
 		FileOutputStream fos = null;
 		
+		try {
+			fos = new FileOutputStream(f);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 		if(dataType == "text") {
-			try {
-				fos = new FileOutputStream(f);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-			
 			try {
 				fos.write(editor.getText().getBytes());
 			} catch (IOException e) {
@@ -99,23 +99,25 @@ public class Data {
 			String[][] tlist = new String[tmp_list.length][];
 			int length = 0;
 			for(int i = 0; i < tmp_list.length; i++) {
-				tlist[i] = tmp_list[i].split(" ");
+				tlist[i] = tmp_list[i].split("\t");
 				length += tlist[i].length;
 			}
 			
-			char[] binary = new char[length];
+			byte[] binary = new byte[length];
 			int count = 0;
 			
 			for(int i = 0; i < tlist.length; i++) {
 				for(int j = 0; j < tlist[i].length; j++) {
-					binary[count] = (char)(int)Integer.valueOf(tlist[i][j], 16);
+					binary[count] = (byte)(int)Integer.valueOf(tlist[i][j], 16);
 					count++;
 				}
 			}
-			
-			JOptionPane.showMessageDialog(null,
-					"Error:Saving a binary file",
-					"ERROR", JOptionPane.ERROR_MESSAGE);
+
+			try {
+				fos.write(binary);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		if(dataType == "image") {
