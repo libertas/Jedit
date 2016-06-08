@@ -98,5 +98,8 @@ public class Data {
 					"Error:Saving a binary file",
 					"ERROR", JOptionPane.ERROR_MESSAGE);
 		}
+		
+		if(dataType == "image") {
+		}
 	}
 }
