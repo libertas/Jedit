@@ -94,6 +94,25 @@ public class Data {
 		}
 		
 		if(dataType == "bin") {
+			String text = this.editor.getText();
+			String[] tmp_list = text.split("\n");
+			String[][] tlist = new String[tmp_list.length][];
+			int length = 0;
+			for(int i = 0; i < tmp_list.length; i++) {
+				tlist[i] = tmp_list[i].split(" ");
+				length += tlist[i].length;
+			}
+			
+			char[] binary = new char[length];
+			int count = 0;
+			
+			for(int i = 0; i < tlist.length; i++) {
+				for(int j = 0; j < tlist[i].length; j++) {
+					binary[count] = (char)(int)Integer.valueOf(tlist[i][j], 16);
+					count++;
+				}
+			}
+			
 			JOptionPane.showMessageDialog(null,
 					"Error:Saving a binary file",
 					"ERROR", JOptionPane.ERROR_MESSAGE);
