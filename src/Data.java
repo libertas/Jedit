@@ -25,6 +25,13 @@ public class Data {
 		}
 	}
 	
+	public Data(String filename) {
+		this.filename = filename;
+		this.editor = null;
+		
+		this.dataType = "image";
+	}
+	
 	public void open() {
 		File f = new File(filename);
 		FileInputStream fis = null;

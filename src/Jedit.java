@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -10,7 +11,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -56,7 +59,7 @@ public class Jedit {
 					return;
 				}
 				
-				Object[] obj = MakeTab(); 
+				Object[] obj = MakeTextTab(); 
 				tabbedPane.add((Component) obj[0], fc.filename);
 				Data data = new Data(fc.filename, (JTextArea) obj[1]);
 				dataList.add(data);
@@ -75,9 +78,18 @@ public class Jedit {
 					return;
 				}
 				
-				Object[] obj = MakeTab(); 
-				tabbedPane.add((Component) obj[0], fc.filename);
-				Data data = new Data(fc.filename, (JTextArea) obj[1]);
+				Data data;
+				
+				if(fc.filename.endsWith(".png")) {
+					ImageIcon icon = new ImageIcon(fc.filename);
+					tabbedPane.add(MakeImgTab(icon));
+					data = new Data(fc.filename);
+				} else {
+					Object[] obj = MakeTextTab(); 
+					tabbedPane.add((Component) obj[0], fc.filename);
+					data = new Data(fc.filename, (JTextArea) obj[1]);
+					
+				}
 				dataList.add(data);
 				data.open();
 			}
@@ -135,7 +147,7 @@ public class Jedit {
 		app.setVisible(true);
 	}
 	
-	protected static Object[] MakeTab() {
+	protected static Object[] MakeTextTab() {
 		JPanel jp = new JPanel();
 		jp.setLayout(new BoxLayout(jp, 1));
 
@@ -149,5 +161,21 @@ public class Jedit {
 		obj[1] = editor;
 		
 		return obj;
+	}
+	
+	protected static JPanel MakeImgTab(ImageIcon icon) {
+		JPanel jp = new JPanel();
+		jp.setLayout(new BoxLayout(jp, 1));
+
+		JLabel jlpic = new JLabel();
+		jp.add(jlpic);
+		
+		icon.setImage(icon.getImage().getScaledInstance(icon.getIconWidth(),
+				icon.getIconHeight(), Image.SCALE_DEFAULT));
+		jlpic.setBounds(0, 0, 500, 670);
+		jlpic.setHorizontalAlignment(0);
+		jlpic.setIcon(icon);
+		
+		return jp;
 	}
 }
