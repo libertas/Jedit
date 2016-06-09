@@ -82,7 +82,7 @@ public class Jedit {
 				
 				if(fc.filename.endsWith(".png")) {
 					ImageIcon icon = new ImageIcon(fc.filename);
-					tabbedPane.add(MakeImgTab(icon));
+					tabbedPane.add(MakeImgTab(icon), fc.filename);
 					data = new Data(fc.filename);
 				} else {
 					Object[] obj = MakeTextTab(); 
