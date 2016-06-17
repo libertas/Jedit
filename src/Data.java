@@ -18,7 +18,9 @@ public class Data {
 		
 		if(filename.endsWith(".txt")) {
 			this.dataType = "text";
-		} else if(filename.endsWith(".png")) {
+		} else if(filename.endsWith(".png")
+				|| filename.endsWith(".gif") 
+				|| filename.endsWith(".png")) {
 			this.dataType = "image";
 		} else {
 			this.dataType = "bin";
@@ -42,34 +44,43 @@ public class Data {
 		}
 		
 		if(dataType == "text" || dataType == "bin") {
-			byte[] buf = new byte[1024];
-			StringBuffer sb = new StringBuffer();
-	        try {
-	        	while((fis.read(buf)) != -1) {
-	        		sb.append(new String(buf));    
-	        		buf=new byte[1024];
-	        	}
-			} catch (IOException e1) {
-				e1.printStackTrace();
+			editor.setText("");
+			
+			if(dataType == "text") {
+				byte[] buf = new byte[1024];
+				
+		        try {
+		        	while((fis.read(buf)) != -1) {
+		        		String str = new String(buf);
+		        		str = str.trim();
+	
+		        		this.editor.append(str);
+		        		
+		        		buf=new byte[1024];
+		        	}
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 	        
-	        if(dataType == "text") {
-	        	editor.setText(sb.toString());
-	        }
-	        
-	        String str = sb.toString();
-
 	        if(dataType == "bin") {
-	        	String tmp;
-	        	for(int i = 0; i < f.length(); i++) {
-	        		tmp = Integer.toHexString(str.charAt(i));
-		        	if((i + 1) % 5 == 0) {
-		        		editor.append(tmp + "\n");
-		        	} else {
-		        		editor.append(tmp + "\t");
+	        	try {
+	        		byte[] b = new byte[(int) f.length()];
+	        		fis.read(b);
+	        		
+	        		String tmp;
+		        	for(int i = 0; i < b.length; i++) {
+		        		tmp = Integer.toHexString(b[i] & 0xff);
+			        	if((i + 1) % 5 == 0) {
+			        		editor.append(tmp + "\n");
+			        	} else {
+			        		editor.append(tmp + "\t");
+			        	}
 		        	}
+	        	} catch (Exception e) {
+	        		e.printStackTrace();
 	        	}
-	        }
+    		}
 		}
         
         
